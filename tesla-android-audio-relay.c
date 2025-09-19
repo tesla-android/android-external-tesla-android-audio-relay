@@ -31,7 +31,7 @@
 // Server fragment target is set in muxer (~40ms)
 
 // Extra chatty ingest logs
-#define VERBOSE_INGEST 1
+#define VERBOSE_INGEST 0
 
 // ===================== logging ====================
 #ifdef __ANDROID__
