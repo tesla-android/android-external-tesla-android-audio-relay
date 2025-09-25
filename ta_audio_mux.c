@@ -389,22 +389,20 @@ static enum AVSampleFormat choose_flac_sample_fmt(const AVCodec* codec){
   return AV_SAMPLE_FMT_S16P;
 }
 
-static int set_audio_layout(AVCodecContext* enc, int channels){
+static int set_audio_layout(AVCodecContext* enc, int channels) {
 #if LIBAVUTIL_VERSION_MAJOR >= 57
-  if (channels == 2) {
-    enc->ch_layout = (AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO;
-  } else {
-    av_channel_layout_default(&enc->ch_layout, channels);
-  }
-  enc->channels       = channels;
-  enc->channel_layout = (channels == 2) ? AV_CH_LAYOUT_STEREO : 0;
+    if (channels == 2) {
+        av_channel_layout_from_mask(&enc->ch_layout, AV_CH_LAYOUT_STEREO);
+    } else {
+        av_channel_layout_default(&enc->ch_layout, channels);
+    }
 #else
-  enc->channels       = channels;
-  enc->channel_layout = (channels == 2)
-                        ? AV_CH_LAYOUT_STEREO
-                        : av_get_default_channel_layout(channels);
+    enc->channels = channels;
+    enc->channel_layout = (channels == 2)
+        ? AV_CH_LAYOUT_STEREO
+        : av_get_default_channel_layout(channels);
 #endif
-  return 0;
+    return 0;
 }
 
 static int bprs_for_fmt(enum AVSampleFormat fmt){
